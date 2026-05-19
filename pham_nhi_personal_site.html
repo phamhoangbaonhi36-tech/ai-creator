@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c0f;
+  --surface:#141417;
+  --border:rgba(255,255,255,0.07);
+  --text:#f0ede8;
+  --muted:#7a7874;
+  --accent:#e8c87a;
+  --accent2:#c4a55a;
+  --film:#1a1a1e;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* FILM GRAIN */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;opacity:0.4;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 3rem;
+  border-bottom:1px solid var(--border);
+  background:rgba(12,12,15,0.8);
+  backdrop-filter:blur(12px);
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;letter-spacing:0.02em;
+  color:var(--text);
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{
+  font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color 0.3s;
+}
+.nav-links a:hover{color:var(--accent)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:8rem 3rem 4rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  right:-10%;top:50%;transform:translateY(-50%);
+  width:55%;aspect-ratio:1;
+  background:radial-gradient(circle at center, rgba(232,200,122,0.05) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero-text{max-width:520px}
+.eyebrow{
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--accent)}
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,5vw,4.2rem);
+  font-weight:700;line-height:1.1;
+  margin-bottom:1.5rem;
+}
+h1 em{font-style:italic;color:var(--accent)}
+.hero-desc{
+  font-size:1rem;color:var(--muted);line-height:1.8;
+  max-width:420px;margin-bottom:2.5rem;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  padding:0.85rem 2rem;
+  border:1px solid var(--accent);
+  color:var(--accent);font-size:0.82rem;
+  letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;
+  transition:all 0.3s;
+}
+.hero-cta:hover{background:var(--accent);color:#0c0c0f}
+.hero-cta svg{transition:transform 0.3s}
+.hero-cta:hover svg{transform:translateX(4px)}
+
+/* FILM STRIP HERO VISUAL */
+.hero-visual{
+  display:flex;justify-content:flex-end;align-items:center;
+  padding-left:2rem;
+}
+.film-strip{
+  position:relative;
+  width:280px;
+}
+.film-frame{
+  background:var(--film);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:2px;
+  overflow:hidden;
+  position:relative;
+}
+.film-frame::before,.film-frame::after{
+  content:'';
+  position:absolute;left:0;right:0;
+  height:24px;
+  background:repeating-linear-gradient(90deg, transparent 0, transparent 6px, var(--bg) 6px, var(--bg) 12px);
+  z-index:2;
+}
+.film-frame::before{top:0}
+.film-frame::after{bottom:0}
+.frame-inner{
+  margin:24px 12px;
+  height:180px;
+  background:linear-gradient(135deg,#1e1c2e 0%,#2a1f2e 50%,#1e2a2a 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.frame-inner::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(232,200,122,0.08) 100%);
+}
+.frame-label{
+  position:absolute;bottom:8px;left:12px;
+  font-size:0.65rem;letter-spacing:0.15em;color:var(--accent);
+  text-transform:uppercase;opacity:0.8;
+}
+.initials-circle{
+  width:80px;height:80px;border-radius:50%;
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem;color:var(--accent);
+  position:relative;z-index:1;
+}
+.film-dots{
+  display:flex;justify-content:center;gap:0.4rem;margin-top:1rem;
+}
+.film-dots span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--border);
+}
+.film-dots span:nth-child(2){background:var(--accent)}
+.location-tag{
+  text-align:center;margin-top:0.75rem;
+  font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;
+}
+
+/* SECTION */
+section{padding:5rem 3rem}
+.section-label{
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:3rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
+
+/* SKILLS GRID */
+.skills-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem}
+.skills-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400}
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border)}
+.skill-card{
+  background:var(--bg);
+  padding:2.5rem 2rem;
+  position:relative;overflow:hidden;
+  transition:background 0.4s;
+}
+.skill-card:hover{background:var(--surface)}
+.skill-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.4s;
+}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-num{
+  font-family:'Playfair Display',serif;
+  font-size:0.75rem;color:var(--accent);opacity:0.5;
+  margin-bottom:1rem;
+}
+.skill-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.35rem;font-weight:400;
+  margin-bottom:0.5rem;
+}
+.skill-level{
+  display:inline-block;
+  font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;
+  border:1px solid var(--border);
+  color:var(--muted);margin-bottom:1rem;
+}
+.skill-desc{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+/* TOOLS */
+.tools-section{background:var(--surface)}
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1.5rem;
+}
+.tool-card{
+  padding:1.5rem;
+  border:1px solid var(--border);
+  text-align:center;
+  transition:border-color 0.3s;
+  position:relative;overflow:hidden;
+}
+.tool-card:hover{border-color:var(--accent)}
+.tool-icon{font-size:1.75rem;margin-bottom:0.75rem}
+.tool-name{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;margin-bottom:0.3rem;
+}
+.tool-use{font-size:0.78rem;color:var(--muted)}
+
+/* PORTFOLIO */
+.portfolio-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1px;
+  background:var(--border);
+}
+.portfolio-item{
+  background:var(--bg);
+  padding:2rem;
+  transition:background 0.3s;
+  cursor:pointer;
+}
+.portfolio-item:hover{background:var(--surface)}
+.portfolio-type{
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.75rem;
+}
+.portfolio-name{
+  font-family:'Playfair Display',serif;font-size:1.1rem;
+  margin-bottom:0.5rem;
+}
+.portfolio-link{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.78rem;color:var(--muted);text-decoration:none;
+  margin-top:1rem;
+  transition:color 0.3s;
+}
+.portfolio-link:hover{color:var(--accent)}
+.portfolio-link svg{width:12px;height:12px}
+
+/* CONTACT */
+.contact-section{
+  background:var(--film);
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:5rem 3rem;
+}
+.contact-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:400;margin-bottom:1.5rem;
+}
+.contact-title em{font-style:italic;color:var(--accent)}
+.contact-links{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;
+  margin-top:2.5rem;
+}
+.contact-link{
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.85rem;color:var(--muted);
+  text-decoration:none;transition:color 0.3s;
+}
+.contact-link:hover{color:var(--accent)}
+.contact-link svg{width:16px;height:16px;opacity:0.6}
+.divider{
+  width:1px;height:20px;background:var(--border);
+}
+
+/* FOOTER */
+footer{
+  padding:1.5rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border);
+}
+footer p{font-size:0.75rem;color:var(--muted)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-text > *{opacity:0;animation:fadeUp 0.8s ease forwards}
+.hero-text .eyebrow{animation-delay:0.1s}
+.hero-text h1{animation-delay:0.25s}
+.hero-text .hero-desc{animation-delay:0.4s}
+.hero-text .hero-cta{animation-delay:0.55s}
+.hero-visual{opacity:0;animation:fadeUp 0.9s 0.4s ease forwards}
+
+@media(max-width:700px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{gap:1rem}
+  .hero{grid-template-columns:1fr;padding:6rem 1.5rem 3rem;gap:3rem}
+  .hero-visual{justify-content:center;padding-left:0}
+  section{padding:3.5rem 1.5rem}
+  .skills-grid{grid-template-columns:1fr}
+  .contact-section{padding:3.5rem 1.5rem}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Phạm <span>Nhi</span></div>
+  <div class="nav-links">
+    <a href="#about">Giới thiệu</a>
+    <a href="#skills">Kỹ năng</a>
+    <a href="#portfolio">Dự án</a>
+    <a href="#contact">Liên hệ</a>
+  </div>
+</nav>
+
+<section class="hero" id="about">
+  <div class="hero-text">
+    <div class="eyebrow">AI Content Creator</div>
+    <h1>Xin chào,<br>mình là <em>Phạm Nhi</em></h1>
+    <p class="hero-desc">
+      Một người làm sáng tạo nội dung AI tại Phan Rang, Khánh Hòa. Mình đam mê AI Film Making, từ storyboard đến gen video — kết nối nghệ thuật kể chuyện với công nghệ hiện đại.
+    </p>
+    <a href="#portfolio" class="hero-cta">
+      Xem dự án
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="hero-visual">
+    <div class="film-strip">
+      <div class="film-frame">
+        <div class="frame-inner">
+          <div class="initials-circle">PBN</div>
+          <div class="frame-label">Phan Rang · 2025</div>
+        </div>
+      </div>
+      <div class="film-dots">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="location-tag">📍 Phan Rang, Khánh Hòa, Việt Nam</div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="padding:5rem 3rem;background:var(--bg)">
+  <div class="section-label">Năng lực</div>
+  <div class="skills-header">
+    <h2 class="skills-title">Những kỹ năng<br><em style="font-family:'Playfair Display',serif;font-style:italic;color:var(--accent)">chuyên môn</em></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-num">01</div>
+      <div class="skill-name">Content Marketing</div>
+      <div class="skill-level">Senior · Từ 2019</div>
+      <p class="skill-desc">Sản xuất nội dung marketing cho doanh nghiệp — bắt đầu với SEO content, hiện tập trung vào social media content với chiến lược dài hạn.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-num">02</div>
+      <div class="skill-name">AI Storyboard Artist</div>
+      <div class="skill-level">Junior · Từ 2025</div>
+      <p class="skill-desc">Dựng storyboard cho TVC AI tại các agency chuyên mảng phim quảng cáo — chuyển ý tưởng thành hình ảnh kịch bản chi tiết.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-num">03</div>
+      <div class="skill-name">AI Gen Video Scientist</div>
+      <div class="skill-level">Junior · Từ 2025</div>
+      <p class="skill-desc">Nghiên cứu và gen các cảnh quay từ storyboard, phân tích kết quả thực tế để tối ưu hoá chất lượng sản phẩm video cuối.</p>
+    </div>
+    <div class="skill-card">
+      <div class="skill-num">04</div>
+      <div class="skill-name">Media Assistant</div>
+      <div class="skill-level">Junior · Agency</div>
+      <p class="skill-desc">Hỗ trợ media cho khách hàng tại TP.HCM — bao gồm edit video on-site theo yêu cầu khẩn cấp và quản lý nội dung truyền thông.</p>
+    </div>
+  </div>
+</section>
+
+<section class="tools-section" id="tools">
+  <div class="section-label">Công cụ</div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;margin-bottom:2.5rem">Các AI tools<br><em style="font-style:italic;color:var(--accent)">đang sử dụng</em></h2>
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-icon">✍️</div>
+      <div class="tool-name">ChatGPT</div>
+      <div class="tool-use">Tạo sườn kịch bản</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🎬</div>
+      <div class="tool-name">CapCut / AI Editor</div>
+      <div class="tool-use">Edit video</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🎥</div>
+      <div class="tool-name">AI Video Gen</div>
+      <div class="tool-use">Gen video cảnh quay</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🖼️</div>
+      <div class="tool-name">Image AI</div>
+      <div class="tool-use">Edit sản phẩm & Typo</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🎨</div>
+      <div class="tool-name">Gen Frame AI</div>
+      <div class="tool-use">Gen ảnh frame storyboard</div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio" style="padding:5rem 3rem;background:var(--bg)">
+  <div class="section-label">Portfolio</div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;margin-bottom:2.5rem">Một số<br><em style="font-style:italic;color:var(--accent)">sản phẩm</em></h2>
+  <div class="portfolio-grid">
+    <div class="portfolio-item">
+      <div class="portfolio-type">Storyboard + Video</div>
+      <div class="portfolio-name">VEADONS</div>
+      <p style="font-size:0.85rem;color:var(--muted)">Storyboard và video AI hoàn chỉnh cho chiến dịch thương hiệu.</p>
+      <a href="https://docs.google.com/spreadsheets/d/1lTSP1UkmqTgYN-4NPR8Tq8F7Y1GLTohsM-DdMhTHABM/edit?usp=drive_link" class="portfolio-link" target="_blank">
+        Xem Storyboard
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-type">Storyboard</div>
+      <div class="portfolio-name">Mukbang ft Binggrea</div>
+      <p style="font-size:0.85rem;color:var(--muted)">Storyboard sáng tạo cho video mukbang kết hợp thương hiệu.</p>
+      <a href="https://docs.google.com/spreadsheets/d/1SnYHYYDWuhMm3MOfX3DrrmId51MgUz7YTyo3blKKmLs/edit?gid=0#gid=0" class="portfolio-link" target="_blank">
+        Xem Storyboard
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-type">Video AI</div>
+      <div class="portfolio-name">Trung Thu DPS</div>
+      <p style="font-size:0.85rem;color:var(--muted)">Video AI sản xuất cho dịp Trung Thu — kết hợp gen ảnh và dựng phim.</p>
+      <a href="https://drive.google.com/file/d/1lyYyuLXny0fEj8iyKDXhyrAEw46kPeSd/view?usp=sharing" class="portfolio-link" target="_blank">
+        Xem Video
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-type">Video AI</div>
+      <div class="portfolio-name">Xuân 2026 DPS</div>
+      <p style="font-size:0.85rem;color:var(--muted)">Video chào mừng Xuân mới 2026 — phong cách điện ảnh AI.</p>
+      <a href="https://drive.google.com/file/d/1isd0MSHBXa3y4MAowNZx1i9KFMMlV1O7/view?usp=drive_link" class="portfolio-link" target="_blank">
+        Xem Video
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-type">YouTube Series</div>
+      <div class="portfolio-name">Thời trang Bigsize</div>
+      <p style="font-size:0.85rem;color:var(--muted)">Chuỗi series thời trang bigsize — sản xuất nội dung video dài hạn.</p>
+      <a href="https://www.youtube.com/@KimNguuNhi96" class="portfolio-link" target="_blank">
+        Xem kênh YouTube
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-title">Hãy cùng nhau<br><em>tạo ra điều gì đó</em></div>
+  <p style="color:var(--muted);font-size:0.95rem;max-width:400px;margin:0 auto">Mình luôn sẵn lòng hợp tác cho các dự án sáng tạo — từ storyboard, AI video đến content marketing.</p>
+  <div class="contact-links">
+    <a href="mailto:phamhoangbaonhi36@gmail.com" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      phamhoangbaonhi36@gmail.com
+    </a>
+    <div class="divider"></div>
+    <a href="tel:0915874144" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      0915 874 144 (Zalo)
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Phạm Hoàng Bảo Nhi</p>
+  <p style="font-size:0.72rem">AI Storyboard Artist · Content Creator · Phan Rang, VN</p>
+</footer>
+
+</body>
+</html>
